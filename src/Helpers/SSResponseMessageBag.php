@@ -14,6 +14,7 @@ class SSResponseMessageBag
     public function add($field, $message): static
     {
         $this->messageBags->push([$field => $message]);
+
         return $this;
     }
 

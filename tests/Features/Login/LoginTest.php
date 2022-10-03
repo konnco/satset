@@ -8,7 +8,7 @@ it('can login', function () {
     \Konnco\SatSet\Tests\Models\User::create(
         [
             'email' => 'frankyso.mail@gmail.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]
     );
 
@@ -18,19 +18,16 @@ it('can login', function () {
         action(CanLoginController::class),
         [
             'email' => 'frankyso.mail@gmail.com',
-            'password' => 'password'
+            'password' => 'password',
         ])
         ->assertOk();
 });
 
 it('can validate request login', function () {
-
 });
 
 it('can login with multiple identifier', function () {
-
 });
 
 it('can register push token notification', function () {
-
 });
