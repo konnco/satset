@@ -18,26 +18,26 @@ class LoginController extends Controller
 
     protected string $model;
 
-    private function getModel(): string|Model
+    private function model(): string|Model
     {
         return $this->model ?? "\\App\\Models\\User";
     }
 
-    public function getQuery(): Builder
+    public function modelQuery(): Builder
     {
-        return $this->getModel()::query();
+        return $this->model()::query();
     }
 
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getRequestDevice(): mixed
+    public function requestDevice(): mixed
     {
         return request()->get('device', 'Default');
     }
 
-    public function getLoginColumnIdentifier(): array
+    public function columnIdentifier(): array
     {
         return [
             'email' => 'email'
@@ -56,8 +56,8 @@ class LoginController extends Controller
     public function __invoke(Request $request)
     {
         $this->validate();
-        $user = $this->getIdentifiedUser();
-        $token = $user->createToken($this->getRequestDevice());
+        $user = $this->user();
+        $token = $user->createToken($this->requestDevice());
 
         return SSResponse::success($token->plainTextToken);
     }
@@ -67,11 +67,11 @@ class LoginController extends Controller
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    protected function getIdentifiedUser(): Model|null
+    protected function user(): Model|null
     {
-        $user = $this->getQuery()
+        $user = $this->modelQuery()
             ->where(function ($query) {
-                foreach ($this->getLoginColumnIdentifier() as $column => $field) {
+                foreach ($this->columnIdentifier() as $column => $field) {
                     $query->orWhere($column, $field);
                 }
             })->first();
