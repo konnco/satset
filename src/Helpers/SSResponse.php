@@ -28,11 +28,23 @@ class SSResponse
         return (new self)
             ->content([
                 "errors" => $content,
-                "message" => $content
+                "message" => $message
             ])
             ->code($code)
             ->headers($headers)
             ->send();
+    }
+
+    public static function validationFailed(\Closure $errorBagClosure, string $message = null): \Illuminate\Http\Response
+    {
+        $messageBag = new SSResponseMessageBag();
+        $errors = $errorBagClosure($messageBag);
+
+        return self::error(
+            message: $message ?? collect($errors)?->flatten()?->first(),
+            content: $errors,
+            code: 422
+        )->send();
     }
 
     public function content(string|array $content = ''): static
