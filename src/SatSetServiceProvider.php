@@ -2,9 +2,9 @@
 
 namespace Konnco\SatSet;
 
+use Konnco\SatSet\Commands\SatSetCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Konnco\SatSet\Commands\SatSetCommand;
 
 class SatSetServiceProvider extends PackageServiceProvider
 {
