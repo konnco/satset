@@ -17,7 +17,7 @@ class SSResponse
         return new self;
     }
 
-    public static function success(string|array $content = '', array $headers = []): \Illuminate\Http\Response
+    public static function success(string|array $content = '', array $headers = [], $forceSend = false): \Illuminate\Http\Response
     {
         return (new self)
             ->content($content)
@@ -44,9 +44,9 @@ class SSResponse
 
         return self::error(
             message: $message ?? collect($errors)?->flatten()?->first(),
-            content: $errors,
-            code: 422
-        )->send();
+            content: $errors->toArray(),
+            code: 422)
+            ->send();
     }
 
     public function content(string|array $content = ''): static
@@ -92,6 +92,6 @@ class SSResponse
         return Response::make(
             $this->getContent(),
             $this->getCode()
-        )->send();
+        );
     }
 }

@@ -13,7 +13,7 @@ trait HasRequestValidation
         ];
     }
 
-    public function validate()
+    public function validateRequest(): void
     {
         request()->validate($this->rules());
     }

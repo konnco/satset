@@ -11,10 +11,9 @@ class SSResponseMessageBag
         $this->messageBags = collect([]);
     }
 
-    public function error($field, $message): static
+    public function add($field, $message): static
     {
-        $this->messageBags[$field]->push($message);
-
+        $this->messageBags->push([$field => $message]);
         return $this;
     }
 
