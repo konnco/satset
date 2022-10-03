@@ -14,6 +14,7 @@ class SSResponseMessageBag
     public function error($field, $message): static
     {
         $this->messageBags[$field]->push($message);
+
         return $this;
     }
 

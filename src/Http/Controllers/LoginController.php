@@ -20,7 +20,7 @@ class LoginController extends Controller
 
     private function model(): string|Model
     {
-        return $this->model ?? "\\App\\Models\\User";
+        return $this->model ?? '\\App\\Models\\User';
     }
 
     public function modelQuery(): Builder
@@ -40,15 +40,16 @@ class LoginController extends Controller
     public function columnIdentifier(): array
     {
         return [
-            'email' => 'email'
+            'email' => 'email',
         ];
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws Exception
@@ -79,16 +80,16 @@ class LoginController extends Controller
         if ($user == null) {
             SSResponse::validationFailed(function ($errorBag) {
                 $errorBag->error(field: 'email', error: 'Akun tidak ditemukan');
-            }, message: "Hello");
+            }, message: 'Hello');
         }
 
-        if (!Hash::check(\request()->get('password'), @$user->password)) {
+        if (! Hash::check(\request()->get('password'), @$user->password)) {
             SSResponse::validationFailed(function ($errorBag) {
                 $errorBag->error(field: 'email', error: 'Email atau password tidak valid silahkan coba lagi');
-            }, message: "Hello");
+            }, message: 'Hello');
         }
 
-        if (!method_exists($user, 'createToken')) {
+        if (! method_exists($user, 'createToken')) {
             throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
         }
 
