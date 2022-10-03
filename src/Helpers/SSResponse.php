@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Response;
 class SSResponse
 {
     private int $code = 200;
+
     private string|array $content = '';
+
     private array $headers = [];
 
     public static function make(): self
@@ -27,8 +29,8 @@ class SSResponse
     {
         return (new self)
             ->content([
-                "errors" => $content,
-                "message" => $content
+                'errors' => $content,
+                'message' => $content,
             ])
             ->code($code)
             ->headers($headers)
@@ -38,19 +40,21 @@ class SSResponse
     public function content(string|array $content = ''): static
     {
         $this->content = $content;
+
         return $this;
     }
 
     public function getContent(): array
     {
         return [
-            'data' => $this->content
+            'data' => $this->content,
         ];
     }
 
     public function code($code = 200): static
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -62,6 +66,7 @@ class SSResponse
     public function headers(array $headers = []): static
     {
         $this->headers = $headers;
+
         return $this;
     }
 
