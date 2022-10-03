@@ -2,12 +2,18 @@
 
 namespace Konnco\SatSet;
 
-use Konnco\SatSet\Commands\SatSetCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Konnco\SatSet\Commands\SatSetCommand;
+use Illuminate\Support\Facades\Response;
 
 class SatSetServiceProvider extends PackageServiceProvider
 {
+    public function boot()
+    {
+        parent::boot();
+    }
+
     public function configurePackage(Package $package): void
     {
         /*

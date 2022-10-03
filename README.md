@@ -62,6 +62,12 @@ echo $satSet->echoPhrase('Hello, Konnco!');
 composer test
 ```
 
+## Milestone
+* Login
+* Register
+* OTP Verification
+* More Next
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

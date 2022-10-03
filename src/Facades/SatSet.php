@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class SatSet extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Konnco\SatSet\SatSet::class;
     }
