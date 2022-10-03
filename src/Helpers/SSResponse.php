@@ -30,7 +30,7 @@ class SSResponse
         return (new self)
             ->content([
                 'errors' => $content,
-                'message' => $content,
+                'message' => $message,
             ])
             ->code($code)
             ->headers($headers)
