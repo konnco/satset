@@ -18,7 +18,7 @@ class CanLoginWithMultipeIdentifierController extends LoginController
     {
         return [
             'email' => 'email',
-            'phone' => 'phone'
+            'phone' => 'phone',
         ];
     }
 }

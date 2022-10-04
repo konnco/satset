@@ -8,7 +8,7 @@ use Konnco\SatSet\Tests\Features\Login\Controllers\CanLoginWithMultipeIdentifier
 use Konnco\SatSet\Tests\Models\User;
 use function Pest\Laravel\postJson;
 
-function createUser($email = "frankyso.mail@gmail.com", $password = "password", ...$data): User
+function createUser($email = 'frankyso.mail@gmail.com', $password = 'password', ...$data): User
 {
     return User::create(
         array_merge([
@@ -96,5 +96,4 @@ it('can login with multiple identifier', function () {
 });
 
 it('can register push token notification', function () {
-
 });
