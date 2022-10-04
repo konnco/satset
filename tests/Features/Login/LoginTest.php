@@ -10,7 +10,7 @@ use Konnco\SatSet\Tests\Models\User;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
 
-function createUser($email = "frankyso.mail@gmail.com", $password = "password", ...$data): User
+function createUser($email = 'frankyso.mail@gmail.com', $password = 'password', ...$data): User
 {
     return User::create(
         array_merge([
@@ -114,7 +114,7 @@ it('can register push token notification', function () {
         [
             'email' => 'frankyso.mail@gmail.com',
             'password' => 'password',
-            'notification_token' => '123456'
+            'notification_token' => '123456',
         ])
         ->assertOk();
 

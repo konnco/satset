@@ -51,13 +51,13 @@ class LoginController extends Controller
 
     public function columnIdentifierMap()
     {
-        return collect($this->columnIdentifier())->mapWithKeys(fn($item, $key) => [$key => \request()->get($item)]);
+        return collect($this->columnIdentifier())->mapWithKeys(fn ($item, $key) => [$key => \request()->get($item)]);
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @throws ContainerExceptionInterface
@@ -106,7 +106,7 @@ class LoginController extends Controller
             });
         }
 
-        if (!Hash::check(\request()->get('password'), @$user->password)) {
+        if (! Hash::check(\request()->get('password'), @$user->password)) {
             return SSResponse::validationFailed(function (SSResponseMessageBag $errorBag) {
                 $errorBag->add(field: 'email', message: 'Email atau password tidak valid silahkan coba lagi');
 
@@ -114,7 +114,7 @@ class LoginController extends Controller
             });
         }
 
-        if (!method_exists($user, 'createToken')) {
+        if (! method_exists($user, 'createToken')) {
             throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
         }
 

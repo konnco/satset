@@ -20,15 +20,15 @@ trait CanRegisterPushNotificationToken
      */
     public function registerPushNotification()
     {
-        if (!$this->shouldRegisterPushNotificationToken) {
+        if (! $this->shouldRegisterPushNotificationToken) {
             return;
         }
 
-        if (!method_exists($this->user(), 'pushNotificationToken')) {
+        if (! method_exists($this->user(), 'pushNotificationToken')) {
             return;
         }
 
-        if (!request()->filled($this->getNotificationTokenParameterName())) {
+        if (! request()->filled($this->getNotificationTokenParameterName())) {
             return;
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -11,9 +12,9 @@ return [
     |
     */
     'auth' => [
-        'model' => "App\\Models\\User"
+        'model' => 'App\\Models\\User',
     ],
 
     'push_notification' => [
-    ]
+    ],
 ];
