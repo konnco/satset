@@ -3,12 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Konnco\SatSet\Models\PushNotificationToken;
 use Konnco\SatSet\Tests\Features\Login\Controllers\CanLoginController;
 use Konnco\SatSet\Tests\Features\Login\Controllers\CanLoginWithMultipeIdentifierController;
 use Konnco\SatSet\Tests\Models\User;
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
 
-function createUser($email = 'frankyso.mail@gmail.com', $password = 'password', ...$data): User
+function createUser($email = "frankyso.mail@gmail.com", $password = "password", ...$data): User
 {
     return User::create(
         array_merge([
@@ -96,4 +98,25 @@ it('can login with multiple identifier', function () {
 });
 
 it('can register push token notification', function () {
+    Schema::create('users', function (Blueprint $table) {
+        $table->bigIncrements('id');
+        $table->string('email');
+        $table->text('password');
+        $table->timestamps();
+    });
+
+    registerRoute();
+
+    createUser();
+
+    postJson(
+        action(CanLoginController::class),
+        [
+            'email' => 'frankyso.mail@gmail.com',
+            'password' => 'password',
+            'notification_token' => '123456'
+        ])
+        ->assertOk();
+
+    assertDatabaseHas(PushNotificationToken::class, ['token' => '123456']);
 });

@@ -17,8 +17,11 @@ class LoginController extends Controller
 {
     use Concerns\HasRequestValidation;
     use Concerns\Login\HasLifecycleEvent;
+    use Concerns\CanRegisterPushNotificationToken;
 
     protected string $model;
+
+    protected ?Model $user = null;
 
     private function model(): string|Model
     {
@@ -48,13 +51,13 @@ class LoginController extends Controller
 
     public function columnIdentifierMap()
     {
-        return collect($this->columnIdentifier())->mapWithKeys(fn ($item, $key) => [$key => \request()->get($item)]);
+        return collect($this->columnIdentifier())->mapWithKeys(fn($item, $key) => [$key => \request()->get($item)]);
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return Response
      *
      * @throws ContainerExceptionInterface
@@ -72,6 +75,8 @@ class LoginController extends Controller
 
         $token = $user->createToken($this->requestDevice());
 
+        $this->registerPushNotification();
+
         return SSResponse::success($token->plainTextToken);
     }
 
@@ -82,6 +87,10 @@ class LoginController extends Controller
      */
     protected function user(): Response|Model
     {
+        if ($this->user) {
+            return $this->user;
+        }
+
         $user = $this->modelQuery()
             ->where(function ($query) {
                 foreach ($this->columnIdentifierMap() as $column => $field) {
@@ -97,7 +106,7 @@ class LoginController extends Controller
             });
         }
 
-        if (! Hash::check(\request()->get('password'), @$user->password)) {
+        if (!Hash::check(\request()->get('password'), @$user->password)) {
             return SSResponse::validationFailed(function (SSResponseMessageBag $errorBag) {
                 $errorBag->add(field: 'email', message: 'Email atau password tidak valid silahkan coba lagi');
 
@@ -105,11 +114,13 @@ class LoginController extends Controller
             });
         }
 
-        if (! method_exists($user, 'createToken')) {
+        if (!method_exists($user, 'createToken')) {
             throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
         }
 
         $this->didLoggedIn($user);
+
+        $this->user = $user;
 
         return $user;
     }

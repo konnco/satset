@@ -9,7 +9,6 @@ trait HasRequestValidation
         return [
             'email' => 'required',
             'password' => 'required',
-            'notification_token' => 'nullable',
         ];
     }
 
