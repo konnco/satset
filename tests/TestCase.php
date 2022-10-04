@@ -18,13 +18,6 @@ class TestCase extends Orchestra
             fn (string $modelName) => 'Konnco\\SatSet\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
 
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('email');
-            $table->text('password');
-            $table->timestamps();
-        });
-
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
@@ -36,7 +29,7 @@ class TestCase extends Orchestra
             $table->timestamps();
         });
 
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
     }
 
     protected function getPackageProviders($app)

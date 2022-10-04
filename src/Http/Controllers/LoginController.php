@@ -66,6 +66,7 @@ class LoginController extends Controller
         $this->validateRequest();
         $user = $this->user();
 
+
         if ($user instanceof Response) {
             return $user;
         }
