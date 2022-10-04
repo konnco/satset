@@ -25,6 +25,7 @@ class SatSetServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_satset_table')
+            ->hasRoute('api')
             ->hasCommand(SatSetCommand::class);
     }
 }

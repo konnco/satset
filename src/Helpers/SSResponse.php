@@ -17,7 +17,7 @@ class SSResponse
         return new self;
     }
 
-    public static function success(string|array $content = '', array $headers = []): \Illuminate\Http\Response
+    public static function success(string|array $content = '', array $headers = [], $forceSend = false): \Illuminate\Http\Response
     {
         return (new self)
             ->content($content)
@@ -34,6 +34,18 @@ class SSResponse
             ])
             ->code($code)
             ->headers($headers)
+            ->send();
+    }
+
+    public static function validationFailed(\Closure $errorBagClosure, string $message = null): \Illuminate\Http\Response
+    {
+        $messageBag = new SSResponseMessageBag();
+        $errors = $errorBagClosure($messageBag);
+
+        return self::error(
+            message: $message ?? collect($errors)?->flatten()?->first(),
+            content: $errors->toArray(),
+            code: 422)
             ->send();
     }
 
@@ -80,6 +92,6 @@ class SSResponse
         return Response::make(
             $this->getContent(),
             $this->getCode()
-        )->send();
+        );
     }
 }
