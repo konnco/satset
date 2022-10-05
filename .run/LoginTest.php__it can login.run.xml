@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LoginTest.php::it can login" type="PestRunConfigurationType">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="PHP" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <option name="pestRunnerSettings">
+      <PestRunner file="$PROJECT_DIR$/tests/Features/Login/LoginTest.php" method="it can login" scope="Method" />
+    </option>
+    <option name="runnerSettings">
+      <PhpTestRunnerSettings file="$PROJECT_DIR$/tests/Features/Login/LoginTest.php" method="it can login" scope="Method" />
+    </option>
+    <method v="2" />
+  </configuration>
+</component>

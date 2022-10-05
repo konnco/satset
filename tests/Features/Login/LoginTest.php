@@ -46,6 +46,27 @@ it('can login', function () {
         ->assertOk();
 });
 
+it('cannot login with undefined email', function () {
+    Schema::create('users', function (Blueprint $table) {
+        $table->bigIncrements('id');
+        $table->string('email');
+        $table->text('password');
+        $table->timestamps();
+    });
+
+    registerRoute();
+
+    createUser();
+
+    postJson(
+        action(CanLoginController::class),
+        [
+            'email' => 'undefined@gmail.com',
+            'password' => 'password',
+        ])
+        ->assertUnprocessable();
+});
+
 it('can validate request login', function () {
     Schema::create('users', function (Blueprint $table) {
         $table->bigIncrements('id');

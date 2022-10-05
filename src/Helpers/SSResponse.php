@@ -3,6 +3,8 @@
 namespace Konnco\SatSet\Helpers;
 
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
+use Validator;
 
 class SSResponse
 {
@@ -37,16 +39,18 @@ class SSResponse
             ->send();
     }
 
-    public static function validationFailed(\Closure $errorBagClosure, string $message = null): \Illuminate\Http\Response
+    /**
+     */
+    public static function validationFailed(\Closure $errorBagClosure, string $message = null): void
     {
-        $messageBag = new SSResponseMessageBag();
-        $errors = $errorBagClosure($messageBag);
+        $validator = Validator::make(request()->all(), []);
+        $messageBag = $validator->getMessageBag();
 
-        return self::error(
-            message: $message ?? collect($errors)?->flatten()?->first(),
-            content: $errors->toArray(),
-            code: 422)
-            ->send();
+        tap($messageBag, function ($messageBag) use ($errorBagClosure, $validator) {
+            $errorBagClosure($messageBag);
+        });
+
+        throw new ValidationException($validator);
     }
 
     public function content(string|array $content = ''): static

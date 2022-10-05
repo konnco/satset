@@ -12,25 +12,32 @@ use Konnco\SatSet\Helpers\SSResponse;
 use Konnco\SatSet\Helpers\SSResponseMessageBag;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Throwable;
 
 class LoginController extends Controller
 {
     use Concerns\HasRequestValidation;
     use Concerns\Login\HasLifecycleEvent;
     use Concerns\CanRegisterPushNotificationToken;
+    use Concerns\CanGetLoggedInUser;
 
     protected string $model;
 
     protected ?Model $user = null;
 
-    private function model(): string|Model
+    private function model(): string
     {
         return $this->model ?? '\\App\\Models\\User';
     }
 
     public function modelQuery(): Builder
     {
-        return $this->model()::query();
+        /**
+         * @var Model $model
+         */
+        $model = $this->model();
+
+        return $model::query();
     }
 
     /**
@@ -51,77 +58,28 @@ class LoginController extends Controller
 
     public function columnIdentifierMap()
     {
-        return collect($this->columnIdentifier())->mapWithKeys(fn ($item, $key) => [$key => \request()->get($item)]);
+        return collect($this->columnIdentifier())->mapWithKeys(fn($item, $key) => [$key => \request()->get($item)]);
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return Response
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     public function __invoke(Request $request): Response
     {
         $this->validateRequest();
         $user = $this->user();
 
-        if ($user instanceof Response) {
-            return $user;
-        }
-
         $token = $user->createToken($this->requestDevice());
 
         $this->registerPushNotification();
 
         return SSResponse::success($token->plainTextToken);
-    }
-
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    protected function user(): Response|Model
-    {
-        if ($this->user) {
-            return $this->user;
-        }
-
-        $user = $this->modelQuery()
-            ->where(function ($query) {
-                foreach ($this->columnIdentifierMap() as $column => $field) {
-                    $query->orWhere($column, $field);
-                }
-            })->first();
-
-        if ($user == null) {
-            return SSResponse::validationFailed(function (SSResponseMessageBag $errorBag) {
-                $errorBag->add(field: 'email', message: 'Akun tidak ditemukan');
-
-                return $errorBag;
-            });
-        }
-
-        if (! Hash::check(\request()->get('password'), @$user->password)) {
-            return SSResponse::validationFailed(function (SSResponseMessageBag $errorBag) {
-                $errorBag->add(field: 'email', message: 'Email atau password tidak valid silahkan coba lagi');
-
-                return $errorBag;
-            });
-        }
-
-        if (! method_exists($user, 'createToken')) {
-            throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
-        }
-
-        $this->didLoggedIn($user);
-
-        $this->user = $user;
-
-        return $user;
     }
 }

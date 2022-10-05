@@ -2,6 +2,10 @@
 
 namespace Konnco\SatSet\Http\Controllers\Concerns;
 
+use Illuminate\Validation\ValidationException;
+use Throwable;
+use Validator;
+
 trait HasRequestValidation
 {
     public function rules(): array
@@ -12,8 +16,16 @@ trait HasRequestValidation
         ];
     }
 
+    /**
+     * @throws Throwable
+     */
     public function validateRequest()
     {
-        return request()->validate($this->rules());
+        $validator = Validator::make(request()->all(), $this->rules());
+
+        throw_if(
+            $validator->fails(),
+            new ValidationException($validator)
+        );
     }
 }
