@@ -1,6 +1,6 @@
 <?php
 
-namespace Konnco\SatSet\Http\Controllers\Concerns;
+namespace Konnco\SatSet\Http\Controllers\Concerns\Login\Concerns;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

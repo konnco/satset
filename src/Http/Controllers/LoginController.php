@@ -2,22 +2,20 @@
 
 namespace Konnco\SatSet\Http\Controllers;
 
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Konnco\SatSet\Helpers\SSResponse;
+use Konnco\SatSet\Minions\Support\Response;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
 class LoginController extends Controller
 {
-    use Concerns\HasRequestValidation;
-    use Concerns\Login\HasLifecycleEvent;
-    use Concerns\CanRegisterPushNotificationToken;
-    use Concerns\CanGetLoggedInUser;
+    use Concerns\Login\Concerns\HasRequestValidation;
+    use Concerns\Login\Concerns\Login\HasEvent;
+    use Concerns\Login\Concerns\CanRegisterPushNotificationToken;
+    use Concerns\Login\Concerns\CanLoggedInUser;
 
     protected string $model;
 
@@ -25,7 +23,7 @@ class LoginController extends Controller
 
     private function model(): string
     {
-        return $this->model ?? '\\App\\Models\\User';
+        return $this->model ?? config('satset.auth.model');
     }
 
     public function modelQuery(): Builder
@@ -56,20 +54,20 @@ class LoginController extends Controller
 
     public function columnIdentifierMap()
     {
-        return collect($this->columnIdentifier())->mapWithKeys(fn ($item, $key) => [$key => \request()->get($item)]);
+        return collect($this->columnIdentifier())->mapWithKeys(fn($item, $key) => [$key => \request()->get($item)]);
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param Request $request
      *
+     * @return \Illuminate\Http\Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws Exception|Throwable
+     * @throws Throwable
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request)
     {
         $this->validateRequest();
         $user = $this->user();
@@ -78,6 +76,6 @@ class LoginController extends Controller
 
         $this->registerPushNotification();
 
-        return SSResponse::success($token->plainTextToken);
+        return Response::success($token->plainTextToken);
     }
 }

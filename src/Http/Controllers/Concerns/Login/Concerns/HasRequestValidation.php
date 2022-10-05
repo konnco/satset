@@ -1,6 +1,6 @@
 <?php
 
-namespace Konnco\SatSet\Http\Controllers\Concerns;
+namespace Konnco\SatSet\Http\Controllers\Concerns\Login\Concerns;
 
 use Illuminate\Validation\ValidationException;
 use Throwable;

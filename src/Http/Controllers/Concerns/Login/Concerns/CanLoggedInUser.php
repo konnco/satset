@@ -1,16 +1,16 @@
 <?php
 
-namespace Konnco\SatSet\Http\Controllers\Concerns;
+namespace Konnco\SatSet\Http\Controllers\Concerns\Login\Concerns;
 
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Konnco\SatSet\Helpers\SSResponse;
+use Konnco\SatSet\Minions\Support\Response;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-trait CanGetLoggedInUser
+trait CanLoggedInUser
 {
     /**
      * @return Builder|Model|null
@@ -26,7 +26,7 @@ trait CanGetLoggedInUser
     }
 
     /**
-     * @param  Model|Builder|null  $user
+     * @param Model|Builder|null $user
      * @return void
      */
     public function cacheUserIntoClassVariable(Model|Builder|null $user): void
@@ -35,7 +35,7 @@ trait CanGetLoggedInUser
     }
 
     /**
-     * @param  Model|Builder|null  $user
+     * @param Model|Builder|null $user
      * @return void
      */
     public function triggerLoggedInEvent(Model|Builder|null $user): void
@@ -44,42 +44,40 @@ trait CanGetLoggedInUser
     }
 
     /**
-     * @param  Model|Builder|null  $user
+     * @param Model|Builder|null $user
      * @return void
-     *
      * @throws Exception
      */
     public function ensureUserHasImplementSanctumInModel(Model|Builder|null $user): void
     {
-        if (! method_exists($user, 'createToken')) {
+        if (!method_exists($user, 'createToken')) {
             throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
         }
     }
 
     /**
-     * @param  Model|Builder|null  $user
+     * @param Model|Builder|null $user
      * @return void
-     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function ensureUserPasswordIsCorrect(Model|Builder|null $user): void
     {
-        if (! Hash::check(\request()->get('password'), @$user->password)) {
-            SSResponse::validationFailed(function (\Illuminate\Support\MessageBag $errorBag) {
+        if (!Hash::check(\request()->get('password'), @$user->password)) {
+            Response::validationFailed(function (\Illuminate\Support\MessageBag $errorBag) {
                 $errorBag->add('email', 'Email atau password tidak valid silahkan coba lagi');
             });
         }
     }
 
     /**
-     * @param  Model|Builder|null  $user
+     * @param Model|Builder|null $user
      * @return void
      */
     public function ensureUserIsExistInDatabase(Model|Builder|null $user): void
     {
         if ($user == null) {
-            SSResponse::validationFailed(function (\Illuminate\Support\MessageBag $errorBag) {
+            Response::validationFailed(function (\Illuminate\Support\MessageBag $errorBag) {
                 $errorBag->add('email', 'Akun tidak ditemukan');
             });
         }

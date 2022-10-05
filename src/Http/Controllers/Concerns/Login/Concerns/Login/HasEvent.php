@@ -1,10 +1,10 @@
 <?php
 
-namespace Konnco\SatSet\Http\Controllers\Concerns\Login;
+namespace Konnco\SatSet\Http\Controllers\Concerns\Login\Concerns\Login;
 
 use Illuminate\Database\Eloquent\Model;
 
-trait HasLifecycleEvent
+trait HasEvent
 {
     protected function didLoggedIn(Model $user)
     {

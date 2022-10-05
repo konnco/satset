@@ -1,12 +1,12 @@
 <?php
 
-namespace Konnco\SatSet\Helpers;
+namespace Konnco\SatSet\Minions\Support;
 
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Response as IlluminateResponse;
 use Illuminate\Validation\ValidationException;
 use Validator;
 
-class SSResponse
+class Response
 {
     private int $code = 200;
 
@@ -91,7 +91,7 @@ class SSResponse
 
     public function send(): \Illuminate\Http\Response
     {
-        return Response::make(
+        return IlluminateResponse::make(
             $this->getContent(),
             $this->getCode()
         );
