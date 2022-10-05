@@ -26,7 +26,7 @@ trait CanLoggedInUser
     }
 
     /**
-     * @param Model|Builder|null $user
+     * @param  Model|Builder|null  $user
      * @return void
      */
     public function cacheUserIntoClassVariable(Model|Builder|null $user): void
@@ -35,7 +35,7 @@ trait CanLoggedInUser
     }
 
     /**
-     * @param Model|Builder|null $user
+     * @param  Model|Builder|null  $user
      * @return void
      */
     public function triggerLoggedInEvent(Model|Builder|null $user): void
@@ -44,20 +44,20 @@ trait CanLoggedInUser
     }
 
     /**
-     * @param Model|Builder|null $user
+     * @param  Model|Builder|null  $user
      * @return void
      *
      * @throws Exception
      */
     public function ensureUserHasImplementSanctumInModel(Model|Builder|null $user): void
     {
-        if (!method_exists($user, 'createToken')) {
+        if (! method_exists($user, 'createToken')) {
             throw new Exception("Your User model not use \"Laravel\Sanctum\HasApiTokens\" Traits");
         }
     }
 
     /**
-     * @param Model|Builder|null $user
+     * @param  Model|Builder|null  $user
      * @return void
      *
      * @throws ContainerExceptionInterface
@@ -65,7 +65,7 @@ trait CanLoggedInUser
      */
     public function ensureUserPasswordIsCorrect(Model|Builder|null $user): void
     {
-        if (!Hash::check(\request()->get('password'), @$user->password)) {
+        if (! Hash::check(\request()->get('password'), @$user->password)) {
             Response::validationFailed(function (\Illuminate\Support\MessageBag $errorBag) {
                 $errorBag->add('email', trans('satset::login.invalid_credential'));
             });
@@ -73,7 +73,7 @@ trait CanLoggedInUser
     }
 
     /**
-     * @param Model|Builder|null $user
+     * @param  Model|Builder|null  $user
      * @return void
      */
     public function ensureUserIsExistInDatabase(Model|Builder|null $user): void
