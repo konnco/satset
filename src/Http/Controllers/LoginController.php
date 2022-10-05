@@ -54,15 +54,15 @@ class LoginController extends Controller
 
     public function columnIdentifierMap()
     {
-        return collect($this->columnIdentifier())->mapWithKeys(fn($item, $key) => [$key => \request()->get($item)]);
+        return collect($this->columnIdentifier())->mapWithKeys(fn ($item, $key) => [$key => \request()->get($item)]);
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws Throwable
