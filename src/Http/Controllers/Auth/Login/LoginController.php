@@ -9,7 +9,6 @@ use Konnco\SatSet\Http\Controllers\Controller;
 use Konnco\SatSet\Minions\Support\Response;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Konnco\SatSet\Http\Controllers\Auth\Login\Concerns;
 use Throwable;
 
 class LoginController extends Controller
