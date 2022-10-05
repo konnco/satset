@@ -1,21 +1,23 @@
 <?php
 
-namespace Konnco\SatSet\Http\Controllers;
+namespace Konnco\SatSet\Http\Controllers\Auth\Login;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Konnco\SatSet\Http\Controllers\Controller;
 use Konnco\SatSet\Minions\Support\Response;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Konnco\SatSet\Http\Controllers\Auth\Login\Concerns;
 use Throwable;
 
 class LoginController extends Controller
 {
-    use Concerns\Login\Concerns\HasRequestValidation;
-    use Concerns\Login\Concerns\Login\HasEvent;
-    use Concerns\Login\Concerns\CanRegisterPushNotificationToken;
-    use Concerns\Login\Concerns\CanLoggedInUser;
+    use Concerns\HasRequestValidation;
+    use Concerns\HasEvent;
+    use Concerns\CanRegisterPushNotificationToken;
+    use Concerns\CanLoggedInUser;
 
     protected string $model;
 

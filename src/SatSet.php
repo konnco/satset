@@ -3,7 +3,7 @@
 namespace Konnco\SatSet;
 
 use Illuminate\Support\Facades\Route;
-use Konnco\SatSet\Http\Controllers\LoginController;
+use Konnco\SatSet\Http\Controllers\Auth\Login\LoginController;
 
 class SatSet
 {
