@@ -2,6 +2,10 @@
 
 All notable changes to `SatSet` will be documented in this file.
 
+## 0.2.1 - 2022-10-05
+
+**Full Changelog**: https://github.com/konnco/satset/compare/0.2.0...0.2.1
+
 ## 0.2.0 - 2022-10-04
 
 ### What's Changed
