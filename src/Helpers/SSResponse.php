@@ -39,14 +39,12 @@ class SSResponse
             ->send();
     }
 
-    /**
-     */
     public static function validationFailed(\Closure $errorBagClosure, string $message = null): void
     {
         $validator = Validator::make(request()->all(), []);
         $messageBag = $validator->getMessageBag();
 
-        tap($messageBag, function ($messageBag) use ($errorBagClosure, $validator) {
+        tap($messageBag, function ($messageBag) use ($errorBagClosure) {
             $errorBagClosure($messageBag);
         });
 
