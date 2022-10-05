@@ -23,6 +23,7 @@ class SatSetServiceProvider extends PackageServiceProvider
         $package
             ->name('satset')
             ->hasConfigFile()
+            ->hasTranslations()
             ->hasViews()
             ->hasMigration('create_satset_table')
             ->hasRoute('api')
